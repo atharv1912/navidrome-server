@@ -1,4 +1,4 @@
-FROM navidrome/navidrome:latest
+FROM deluan/navidrome:latest
 
 USER root
 
