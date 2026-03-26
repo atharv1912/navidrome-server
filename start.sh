@@ -35,5 +35,5 @@ echo ">>> Waiting for mount to be ready..."
 sleep 5
 
 echo ">>> Starting Navidrome..."
-exec /app/navidrome
+exec /navidrome
 
