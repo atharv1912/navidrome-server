@@ -19,6 +19,7 @@ echo ">>> Mounting R2 bucket to /music..."
 
 mkdir -p /music
 
+# Run rclone mount in background
 rclone mount r2:music /music \
   --read-only \
   --allow-other \
@@ -28,12 +29,23 @@ rclone mount r2:music /music \
   --vfs-cache-max-age 10m \
   --vfs-read-chunk-size 5M \
   --vfs-read-chunk-size-limit 50M \
-  --log-level INFO \
-  --daemon
+  --log-level INFO &
 
 echo ">>> Waiting for mount to be ready..."
 sleep 5
 
-echo ">>> Starting Navidrome..."
-exec /navidrome
+# Verify mount
+if mountpoint -q /music; then
+    echo "? R2 bucket mounted successfully to /music"
+else
+    echo "??  Warning: R2 bucket may not be mounted correctly"
+fi
 
+echo ">>> Starting Navidrome..."
+
+# Set Navidrome environment variables
+export ND_DATAFOLDER="/data"
+export ND_MUSICFOLDER="/music"
+
+# Start Navidrome
+exec /app/navidrome

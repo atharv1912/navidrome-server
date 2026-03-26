@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: navidrome
+    runtime: image
+    repo: https://github.com/yourusername/navidrome-render
+    plan: free
+    image:
+      url: your-dockerhub-username/navidrome:latest
+    disk:
+      name: navidrome-data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: R2_ACCESS_KEY_ID
+        sync: false
+      - key: R2_SECRET_ACCESS_KEY
+        sync: false
+      - key: R2_ENDPOINT
+        sync: false
+    healthCheckPath: /ping
+    autoDeploy: true

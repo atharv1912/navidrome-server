@@ -1,0 +1,24 @@
+services:
+  navidrome:
+    image: my-navidrome
+    container_name: navidrome
+    restart: unless-stopped
+    ports:
+      - "4533:4533"
+    environment:
+      - R2_ACCESS_KEY_ID=${R2_ACCESS_KEY_ID}
+      - R2_SECRET_ACCESS_KEY=${R2_SECRET_ACCESS_KEY}
+      - R2_ENDPOINT=${R2_ENDPOINT}
+    volumes:
+      - navidrome-data:/data
+      - ./start.sh:/start.sh  # Mount local start.sh for debugging
+    devices:
+      - /dev/fuse
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - apparmor:unconfined
+    command: ["/bin/bash", "-c", "ls -la / && cat /start.sh && exec /start.sh"]
+
+volumes:
+  navidrome-data:
